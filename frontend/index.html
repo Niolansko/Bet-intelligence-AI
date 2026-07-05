@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bet Intelligence AI</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Bet Intelligence AI</h1>
+      <div class="sub">Dashboard за прогнози, AI Score, value bets и дневник.</div>
+    </div>
+    <div class="actions">
+      <button onclick="checkHealth()">Провери API</button>
+      <button onclick="loadFootyStats()">FootyStats Today</button>
+      <button class="secondary" onclick="seedData()">Пример</button>
+      <button class="danger" onclick="resetAll()">Reset</button>
+    </div>
+  </div>
+
+  <div class="grid stats">
+    <div class="card stat"><div class="label">Total Bets</div><div id="sTotal" class="num">0</div></div>
+    <div class="card stat"><div class="label">Won Bets</div><div id="sWon" class="num good">0</div></div>
+    <div class="card stat"><div class="label">Win Rate</div><div id="sRate" class="num">0%</div></div>
+    <div class="card stat"><div class="label">Invested</div><div id="sInvested" class="num">0€</div></div>
+    <div class="card stat"><div class="label">Net Profit</div><div id="sProfit" class="num">0€</div></div>
+    <div class="card stat"><div class="label">ROI</div><div id="sRoi" class="num">0%</div></div>
+    <div class="card stat"><div class="label">Avg AI</div><div id="sAi" class="num">0</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('scanner',this)">Скенер</button>
+    <button class="tab" onclick="showTab('addpick',this)">Добави прогноза</button>
+    <button class="tab" onclick="showTab('journal',this)">Дневник</button>
+    <button class="tab" onclick="showTab('api',this)">API Status</button>
+  </div>
+
+  <section id="scanner" class="card">
+    <h2>Най-добри селекции</h2>
+    <div class="filters">
+      <div><label>Спорт</label><select id="fSport"><option value="">Всички</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Volleyball</option></select></div>
+      <div><label>Мин. AI Score</label><input id="fScore" type="number" value="75"></div>
+      <div><label>Мин. Value %</label><input id="fValue" type="number" value="0"></div>
+      <div><label>Сортиране</label><select id="fSort"><option value="score">AI Score</option><option value="value">Value</option><option value="odds">Odds</option></select></div>
+      <button onclick="render()">Филтрирай</button>
+    </div>
+    <div class="tablewrap">
+      <table><thead><tr><th>#</th><th>Мач</th><th>Пазар</th><th>Прогноза</th><th>Коеф.</th><th>Вероятност</th><th>Value</th><th>AI Score</th><th>Източници</th><th>Действие</th></tr></thead><tbody id="pickRows"></tbody></table>
+    </div>
+  </section>
+
+  <section id="addpick" class="card hidden">
+    <h2>Добави прогноза</h2>
+    <div class="formgrid">
+      <div><label>Мач</label><input id="match" placeholder="Arsenal - Chelsea"></div>
+      <div><label>Спорт</label><select id="sport"><option>Football</option><option>Tennis</option><option>Basketball</option><option>Volleyball</option></select></div>
+      <div><label>Лига</label><input id="league" placeholder="Premier League"></div>
+      <div><label>Пазар</label><input id="market" placeholder="Over 2.5 Goals"></div>
+      <div><label>Прогноза</label><input id="prediction" placeholder="Over 2.5"></div>
+      <div><label>Коеф.</label><input id="odds" type="number" step="0.01" value="1.85"></div>
+      <div><label>Stake</label><input id="stake" type="number" step="0.01" value="10"></div>
+      <div><label>Вероятност %</label><input id="prob" type="number" step="0.1" value="60"></div>
+      <div><label>Forebet %</label><input id="forebet" type="number" step="0.1" value="58"></div>
+    </div>
+    <div class="three">
+      <div><label>Tipsters %</label><input id="tipsters" type="number" step="0.1" value="57"></div>
+      <div><label>Form/Stats %</label><input id="stats" type="number" step="0.1" value="62"></div>
+      <div><label>Bookmaker</label><input id="bookmaker" placeholder="Bet365 / Winbet / Efbet"></div>
+    </div>
+    <label>Бележки</label><textarea id="notes"></textarea>
+    <button onclick="addPick()">Добави прогноза</button>
+  </section>
+
+  <section id="journal" class="card hidden">
+    <h2>Дневник</h2>
+    <div class="tablewrap">
+      <table><thead><tr><th>#</th><th>Мач</th><th>Пазар</th><th>Коеф.</th><th>Stake</th><th>AI</th><th>Резултат</th><th>P/L</th><th>Действие</th></tr></thead><tbody id="journalRows"></tbody></table>
+    </div>
+  </section>
+
+  <section id="api" class="card hidden">
+    <h2>API Status</h2>
+    <pre id="apiOutput">Натисни “Провери API”.</pre>
+  </section>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
